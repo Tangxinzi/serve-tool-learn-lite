@@ -20,7 +20,7 @@ export default class SpeaksController {
 
     for (let index = 0; index < speaks.length; index++) {
       speaks[index].label = speaks[index].label ? labels.get(speaks[index].label) : {}
-      speaks[index].audio = `${ request.protocol() }://${ request.host() }/api/audio?lan=${ speaks[index].language }&text=${ speaks[index].speak }`
+      speaks[index].audio = `${ request.protocol() }://${ request.host() }/api/audio?lan=${ speaks[index].language }&text=${ encodeURIComponent(speaks[index].speak) }`
       speaks[index].meta.created = Moment(speaks[index].meta.created).format('YYYY-MM-DD HH:mm:ss')
     }
 

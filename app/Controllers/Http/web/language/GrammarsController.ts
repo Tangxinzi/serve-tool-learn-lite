@@ -39,7 +39,6 @@ export default class GrammarsController {
 
     for (let index = 0; index < grammars.length; index++) {
       grammars[index].label = grammars[index].label ? labels.get(grammars[index].label) : {}
-      grammars[index].audio = `${ request.protocol() }://${ request.host() }/api/audio?lan=${ grammars[index].language }&text=${ grammars[index].grammar }`
       grammars[index].meta.created = Moment(grammars[index].meta.created).format('YYYY-MM-DD HH:mm:ss')
     }
 

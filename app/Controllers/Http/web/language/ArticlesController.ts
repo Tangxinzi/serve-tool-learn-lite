@@ -29,7 +29,6 @@ export default class articlesController {
     for (let index = 0; index < articles.length; index++) {
       articles[index].image = `${ request.protocol() }://${ request.host() }` + articles[index].image
       articles[index].label = articles[index].label ? labels.get(articles[index].label) : {}
-      articles[index].audio = `https://fanyi.baidu.com/gettts?lan=${ articles[index].language }&text=${ articles[index].article }&spd=3&source=web`
       articles[index].meta.created = Moment(articles[index].meta.created).format('YYYY-MM-DD HH:mm:ss')
     }
 

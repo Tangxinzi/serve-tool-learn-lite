@@ -45,7 +45,7 @@ export default class WordsController {
 
     for (let index = 0; index < words.length; index++) {
       words[index].label = words[index].label ? labels.get(words[index].label) : {}
-      words[index].audio = `${ request.protocol() }://${ request.host() }/api/audio?lan=${ words[index].language }&text=${ words[index].word }`
+      words[index].audio = `${ request.protocol() }://${ request.host() }/api/audio?lan=${ words[index].language }&text=${ encodeURIComponent(words[index].word) }`
       words[index].meta.created = Moment(words[index].meta.created).format('YYYY-MM-DD HH:mm:ss')
     }
 
