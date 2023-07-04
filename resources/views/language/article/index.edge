@@ -1,0 +1,49 @@
+@layout('components.main')
+
+@section('title')
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title>{{ dataset.title }}</title>
+@endsection
+
+@section('content')
+<div class="ui labels">
+  <a class="ui small label all" href="{{ request.url() }}">全部</a>
+  @each(row in dataset.labels)
+    <a class="ui small label all" href="{{ request.url() + '?label=' + row['$loki'] }}">{{ row.label }}</a>
+  @endeach
+</div>
+<div class="ui divided items">
+  <div class="item">
+    <div class="extra">
+      <a class="left floated" href="{{ route('web/language/ArticlesController.edit', { id: '0' }) }}">添加{{ dataset.title }}</a>
+      <span class="right floated">共 {{ dataset.data.total || 0 }} 条数据</span>
+    </div>
+  </div>
+  @each((row, index) in dataset.articles)
+    <div class="item">
+      @if(row.image)
+        <img class="ui tiny image bordered rounded" src="{{ row.image }}" />
+      @endif
+      <div class="middle aligned content">
+        <a class="header" href="{{ route('web/language/ArticlesController.edit', { id: row['$loki'] }) }}">{{ ((dataset.data.page - 1) * 10) + index + 1 }}. {{ row.title }}</a>
+        <p class="description">{{ row.description }}</p>
+        <div class="extra">
+          <div class="left floated">{{ row.language }} - {{ row.label.label || '未分标签' }} - {{ row.meta.created }}</div>
+        </div>
+      </div>
+    </div>
+  @endeach
+  <div class="item">
+    <div class="extra">
+      <div class="left floated">
+        <a href="{{ request.url() + '?page=' + dataset.data.lastPage }}">下一页</a>
+        @if(dataset.data.perPage > 0)
+          <a href="{{ request.url() + '?page=' + dataset.data.perPage }}">上一页</a>
+        @endif
+      </div>
+      <span class="right floated">当前第 {{ dataset.data.page }} 页</span>
+    </div>
+  </div>
+</div>
+@endsection

@@ -1,0 +1,90 @@
+<!DOCTYPE html>
+<html lang="zh">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no" />
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <link rel="icon" href="/images/favicon.ico" />
+  @!section('title')
+  {{-- <link rel="stylesheet" href="https://fonts.loli.net/icon?family=Material+Icons"> --}}
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Material+Icons" />
+  <link rel="stylesheet" href="/semantic/semantic.min.css" />
+  {{-- {{ script('https://cdn.jsdelivr.net/npm/js-cookie@2/src/js.cookie.min.js') }} --}}
+  {{-- {{ style('https://semantic-ui.com/dist/semantic.min.css') }} --}}
+  {{-- {{ style('styles/global') }} --}}
+  <style media="screen">
+    nav.navigation { background-color: #f2f2f2; margin-bottom: 2rem; }
+    nav.navigation .ui.items { display: flex; flex-direction: row; align-items: center; }
+    nav.navigation .ui.items .item { margin: 0.75rem 0; color: rgba(0,0,0,.45); }
+    nav.navigation .ui.items .item.active { color: rgba(0,0,0,1); }
+    .flex-between { display: flex; flex-direction: row; justify-content: space-between; }
+  </style>
+  @!section('style')
+</head>
+<body>
+  <div class="ui sidebar menu">
+    <!-- ui sidebar menu -->
+    <div class="item close">
+      <i class="material-icons">close</i>
+    </div>
+  </div>
+  <div class="pusher">
+    @!component('components.menus', dataset=dataset, csrf=csrfField())
+    <div class="ui container" style="min-height: 500px;">
+      <div class="flex-between">
+        <h2>{{ dataset.title }}</h2>
+        <div class="ui transparent icon input">
+          <input type="text" placeholder="搜索...">
+          <i class="search link icon"></i>
+        </div>
+      </div>
+      @!section('content')
+    </div>
+    <footer class="ui container" style="min-height: auto; margin: 30px 0;">
+      <div class="ui right floated horizontal list">
+        <div class="disabled item">Copyright © 2023 Language Learn. All rights reserved.</div>
+      </div>
+      <div class="ui relaxed horizontal list">
+        <span class="item" href=""><i class="kr flag"></i>韩语</span>
+      </div>
+    </footer>
+  </div>
+
+  <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
+  <script src="/semantic/semantic.min.js" charset="utf-8"></script>
+  <script src="/script/global.js" charset="utf-8"></script>
+  <script type="text/javascript">
+    $('.ui.sidebar')
+      .sidebar('setting', 'dimPage', true)
+      .sidebar('attach events', '.item.close')
+      .sidebar('attach events', '.item.menu')
+      .sidebar({ transition: 'scale down' })
+
+    function loading () {
+      $('.ui.modal').modal('setting', 'transition', 'fade up').modal('setting', 'closable', false).modal('show')
+    }
+
+    // $('.navbar .q-navbar').clone().appendTo('.ui.sidebar.menu')
+    $('.ui.dropdown').dropdown()
+    $('.ui.accordion').accordion();
+
+    $('.navbar .item.upload').popup({
+      popup : $('.custom.popup'),
+      on    : 'click',
+      position: 'bottom center'
+    })
+
+    // 播放音频
+    var playAudio = document.getElementsByClassName('play-audio');
+    for (var i = 0; i < playAudio.length; i++) {
+      playAudio[i].addEventListener('click', function() {
+        var dataValue = this.getAttribute('data-audio');
+        var audioElement = new Audio(dataValue);
+        audioElement.play();
+        console.log('Clicked div class:', audioElement);
+      });
+    }
+  </script>
+  @!section('script')
+</body>
+</html>

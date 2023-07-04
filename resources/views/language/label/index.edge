@@ -1,0 +1,37 @@
+@layout('components.main')
+
+@section('title')
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title>{{ dataset.title }}</title>
+@endsection
+
+@section('content')
+<div class="ui labels">
+  @each(row in dataset.labels)
+    <div class="ui small label all">{{ row.label }}</div>
+  @endeach
+</div>
+<form class="ui form" method="post" action="{{ route('web/language/LabelsController.create') }}">
+  <div class="field" hidden>
+    <label>ID</label>
+    <input type="text" name="id" value="{{ dataset.label['$loki'] || '' }}" placeholder="" />
+  </div>
+  <div class="field">
+    <label>标签</label>
+    <input type="text" name="label" value="{{ dataset.label.label || '' }}" placeholder="请选择标签" />
+  </div>
+  <div class="field">
+    <label>释义</label>
+    <input type="text" name="description" value="{{ dataset.label.description || '' }}" placeholder="请输入释义" />
+  </div>
+  <div class="field">
+    <button class="ui button positive right labeled icon button" type="submit">
+      提交
+      <i class="checkmark icon"></i>
+    </button>
+  </div>
+</form>
+<script type="text/javascript">
+</script>
+@endsection

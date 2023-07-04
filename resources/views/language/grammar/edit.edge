@@ -1,0 +1,363 @@
+@layout('components.main')
+
+@section('title')
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title>{{ dataset.title }}</title>
+@endsection
+
+@section('style')
+<link href="https://unpkg.com/@wangeditor/editor@latest/dist/css/style.css" rel="stylesheet">
+<style media="screen">
+  #editor—wrapper { border: 1px solid #ccc; z-index: 100; }
+  #toolbar-container { border-bottom: 1px solid #ccc; }
+  #editor-container { height: 500px; }
+</style>
+@endsection
+
+@section('content')
+<form class="ui form" method="post" action="{{ route(!dataset.grammar['$loki'] ? 'web/language/GrammarsController.create' : 'web/language/GrammarsController.store') }}">
+  <div class="field" hidden>
+    <label>ID</label>
+    <input type="text" name="id" value="{{ dataset.grammar['$loki'] || '' }}" placeholder="" />
+  </div>
+  <div class="field">
+    <label>标签</label>
+    <div class="ui fluid multiple search selection dropdown">
+      <input type="hidden" name="label" value="{{ dataset.grammar.label || '' }}">
+      <i class="dropdown icon"></i>
+      <div class="default text">选择</div>
+      <div class="menu">
+        @each(row in dataset.labels)
+          <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
+        @endeach
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>标题</label>
+    <input type="text" name="title" value="{{ dataset.grammar.title || '' }}" placeholder="请输入语法" />
+  </div>
+  <div class="field">
+    <label>封面</label>
+    <div class="ui action left icon input">
+      <i class="image icon"></i>
+      <input type="text" name="image" id="grammar-image-url" value="{{ dataset.grammar.image || '' }}" placeholder="请输入图片地址 URL" />
+      <div class="ui icon button" data-id="grammar-image-url" id="grammar_image_tmp">
+        <i class="upload icon"></i>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>媒体</label>
+    <div class="ui action left icon input">
+      <i class="unmute icon"></i>
+      <input type="text" name="media" id="grammar-media-url" value="{{ dataset.grammar.media || '' }}" placeholder="请输入媒体地址 URL" />
+      <div class="ui icon button" data-id="grammar-media-url" id="grammar_media_tmp">
+        <i class="upload icon"></i>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>摘要</label>
+    <textarea name="description" rows="4" cols="80" name="description" placeholder="请输入释义（未填写取正文 140 字）">{{ dataset.grammar.description || '' }}</textarea>
+  </div>
+  <div class="field">
+    <label>正文</label>
+    <div id="editor—wrapper">
+      <div id="toolbar-container"><!-- 工具栏 --></div>
+      <div id="editor-container"><!-- 编辑器 --></div>
+    </div>
+    <input id="text" type="text" name="text" value="{{ dataset.grammar.detail || '' }}" hidden />
+    <input id="detail" type="text" name="detail" value="{{ dataset.grammar.detail || '' }}" hidden />
+  </div>
+  @if(dataset.grammar['$loki'])
+  <div class="field">
+    <div class="ui three cards">
+      <div class="card">
+        <div class="content">
+          <div class="header">对话</div>
+          <div class="description">
+            <p>{{ dataset.grammar.talks ? dataset.grammar.talks.length : 0 }} 条对话。</p>
+            <p>关于本语法相关的对话。</p>
+          </div>
+        </div>
+        <div class="ui bottom attached button" onclick="modal('talk')">
+          <i class="add icon"></i>
+          添加对话
+        </div>
+      </div>
+      <div class="card">
+        <div class="content">
+          <div class="header">例句</div>
+          <div class="description">
+            <p>{{ dataset.grammar.speaks ? dataset.grammar.speaks.length : 0 }} 条例句。</p>
+            <p>关于本语法相关的例句。</p>
+          </div>
+        </div>
+        <div class="ui bottom attached button" onclick="modal('speak')">
+          <i class="add icon"></i>
+          添加例句
+        </div>
+      </div>
+      <div class="card">
+        <div class="content">
+          <div class="header">单词</div>
+          <div class="description">
+            <p>{{ dataset.grammar.words ? dataset.grammar.words.length : 0 }} 个单词。</p>
+            <p>关于本语法相关的单词。</p>
+          </div>
+        </div>
+        <div class="ui bottom attached button" onclick="modal('word')">
+          <i class="add icon"></i>
+          添加单词
+        </div>
+      </div>
+    </div>
+  </div>
+  @endif
+  <div class="field">
+    <button class="ui button positive right labeled icon button" type="submit">
+      提交
+      <i class="checkmark icon"></i>
+    </button>
+  </div>
+</form>
+
+{{-- talk --}}
+<form class="ui form small talk modal" method="post" action="{{ route('web/language/GrammarsController.update') }}">
+  <i class="close icon"></i>
+  <div class="header">
+    <div class="flex-between">
+      <span>添加对话</span>
+      <div class="ui button mini basic add" onclick="add('talk', '对话')">添加</div>
+    </div>
+  </div>
+  <div class="content talk">
+    <div class="field" hidden>
+      <label>类型</label>
+      <input type="text" name="type" value="talk" />
+    </div>
+    <div class="field" hidden>
+      <label>ID</label>
+      <input type="text" name="id" value="{{ dataset.grammar['$loki'] || '' }}" placeholder="" />
+    </div>
+    @if(dataset.grammar.hasOwnProperty('talks'))
+      @each((row, index) in dataset.grammar.talks.talk)
+        <div class="three fields talk-{{ index + 1 }}">
+          <div class="field">
+            <label>对话</label>
+            <input type="text" name="talk[]" value="{{ dataset.grammar.talks.talk[index] }}" placeholder="请输入对话" />
+          </div>
+          <div class="field">
+            <label>释义</label>
+            <input type="text" name="text[]" value="{{ dataset.grammar.talks.text[index] }}" placeholder="请输入释义" />
+          </div>
+          <div class="field">
+            <label>操作</label>
+            <div class="ui button mini basic add" onclick="deleteClass('talk-{{ index + 1 }}')">删除</div>
+            <div class="ui button mini basic play-audio" data-audio="{{ request.protocol() }}://{{ request.host() }}/api/audio?lan={{ dataset.grammar.language }}&text={{ dataset.grammar.talks.talk[index] }}">播放</div>
+          </div>
+        </div>
+      @endeach
+    @endif
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">取消</div>
+    <button class="ui button positive right labeled icon button" type="submit">提交</button>
+  </div>
+</form>
+
+{{-- speak --}}
+<form class="ui form small speak modal" method="post" action="{{ route('web/language/GrammarsController.update') }}">
+  <i class="close icon"></i>
+  <div class="header">
+    <div class="flex-between">
+      <span>添加例句</span>
+      <div class="ui button mini basic add" onclick="add('speak', '例句')">添加</div>
+    </div>
+  </div>
+  <div class="content speak">
+    <div class="field" hidden>
+      <label>类型</label>
+      <input type="text" name="type" value="speak" />
+    </div>
+    <div class="field" hidden>
+      <label>ID</label>
+      <input type="text" name="id" value="{{ dataset.grammar['$loki'] || '' }}" placeholder="" />
+    </div>
+    @if(dataset.grammar.hasOwnProperty('speaks'))
+      @each((row, index) in dataset.grammar.speaks.speak)
+        <div class="three fields speak-{{ index + 1 }}">
+          <div class="field">
+            <label>例句</label>
+            <input type="text" name="speak[]" value="{{ dataset.grammar.speaks.speak[index] }}" placeholder="请输入例句" />
+          </div>
+          <div class="field">
+            <label>释义</label>
+            <input type="text" name="text[]" value="{{ dataset.grammar.speaks.text[index] }}" placeholder="请输入释义" />
+          </div>
+          <div class="field">
+            <label>操作</label>
+            <div class="ui button mini basic add" onclick="deleteClass('speak-{{ index + 1 }}')">删除</div>
+            <div class="ui button mini basic play-audio" data-audio="{{ request.protocol() }}://{{ request.host() }}/api/audio?lan={{ dataset.grammar.language }}&text={{ dataset.grammar.speaks.speak[index] }}">播放</div>
+          </div>
+        </div>
+      @endeach
+    @endif
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">取消</div>
+    <button class="ui button positive right labeled icon button" type="submit">提交</button>
+  </div>
+</form>
+
+{{-- word --}}
+<form class="ui form small word modal" method="post" action="{{ route('web/language/GrammarsController.update') }}">
+  <i class="close icon"></i>
+  <div class="header">
+    <div class="flex-between">
+      <span>添加单词</span>
+      <div class="ui button mini basic add" onclick="add('word', '单词')">添加</div>
+    </div>
+  </div>
+  <div class="content word">
+    <div class="field" hidden>
+      <label>类型</label>
+      <input type="text" name="type" value="word" />
+    </div>
+    <div class="field" hidden>
+      <label>ID</label>
+      <input type="text" name="id" value="{{ dataset.grammar['$loki'] || '' }}" placeholder="" />
+    </div>
+    @if(dataset.grammar.hasOwnProperty('words'))
+      @each((row, index) in dataset.grammar.words.word)
+        <div class="three fields word-{{ index + 1 }}">
+          <div class="field">
+            <label>单词</label>
+            <input type="text" name="word[]" value="{{ dataset.grammar.words.word[index] }}" placeholder="请输入单词" />
+          </div>
+          <div class="field">
+            <label>释义</label>
+            <input type="text" name="text[]" value="{{ dataset.grammar.words.text[index] }}" placeholder="请输入释义" />
+          </div>
+          <div class="field">
+            <label>操作</label>
+            <div class="ui button mini basic add" onclick="deleteClass('word-{{ index + 1 }}')">删除</div>
+            <div class="ui button mini basic play-audio" data-audio="{{ request.protocol() }}://{{ request.host() }}/api/audio?lan={{ dataset.grammar.language }}&text={{ dataset.grammar.words.word[index] }}">播放</div>
+          </div>
+        </div>
+      @endeach
+    @endif
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">取消</div>
+    <button class="ui button positive right labeled icon button" type="submit">提交</button>
+  </div>
+</form>
+
+
+<script type="text/javascript">
+  function modal (type) {
+    $('.ui.modal.' + type).modal('setting', 'transition', 'fade up').modal('setting', 'closable', false).modal('show')
+  }
+
+  function add(type, typeText) {
+    var length = $('.three.fields').length
+    var htmlContent = `<div class="three fields ${ type }-${ length }">
+      <div class="field">
+        <label>${ typeText }</label>
+        <input type="text" name="${ type }[]" placeholder="请输入${ typeText }" />
+      </div>
+      <div class="field">
+        <label>释义</label>
+        <input type="text" name="text[]" placeholder="请输入释义" />
+      </div>
+      <div class="field">
+        <label>操作</label>
+        <div class="ui button mini basic add" onclick="deleteClass('${ type }-${ length }')">删除</div>
+      </div>
+    </div>`
+    $('.modal .content.' + type).append(htmlContent)
+  }
+
+  function deleteClass(className) {
+    $('.' + className).remove()
+  }
+
+  function upload() {
+    var datainfo = this.getAttribute('data-id')
+
+    // 创建一个 input 元素用于文件选择
+    var input = document.createElement('input');
+    input.type = 'file';
+
+    // 当选择文件时执行上传操作
+    input.addEventListener('change', function() {
+      var file = input.files[0];
+      var formData = new FormData();
+      formData.append('file', file);
+
+      // 创建 XMLHttpRequest 对象并发送文件
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/upload', true);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          var response = JSON.parse(xhr.response)
+          document.getElementById(datainfo).value = response.data.url
+        } else {
+          console.log('文件上传失败');
+        }
+      };
+      xhr.send(formData);
+    });
+
+    // 模拟点击 input 元素选择文件
+    input.click();
+  }
+
+  document.getElementById('grammar_image_tmp').addEventListener('click', upload);
+  document.getElementById('grammar_media_tmp').addEventListener('click', upload);
+</script>
+@endsection
+
+@section('script')
+<script src="https://unpkg.com/@wangeditor/editor@latest/dist/index.js"></script>
+<script type="text/javascript">
+  const { createEditor, createToolbar } = window.wangEditor
+
+  const editor = createEditor({
+    selector: '#editor-container',
+    html: $('#detail').val() || '',
+    config: {
+      placeholder: '请输入内容...',
+      MENU_CONF: {
+        uploadImage: {
+          server: '/api/upload',
+          fieldName: 'file',
+          maxFileSize: 10 * 1024 * 1024
+        },
+        uploadVideo: {
+          server: '/api/upload',
+          fieldName: 'file',
+          maxFileSize: 100 * 1024 * 1024
+        },
+      },
+      onChange(editor) {
+        $('#text').val(editor.getText())
+        $('#detail').val(editor.getHtml())
+      }
+    },
+    mode: 'simple', // or 'simple'
+  })
+
+  const toolbarConfig = {}
+
+  const toolbar = createToolbar({
+    editor,
+    selector: '#toolbar-container',
+    config: toolbarConfig,
+    mode: 'simple', // or 'simple'
+  })
+</script>
+@endsection

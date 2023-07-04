@@ -1,0 +1,102 @@
+@layout('components.main')
+
+@section('title')
+<meta name="keyspeaks" content="" />
+<meta name="description" content="" />
+<title>{{ dataset.title }}</title>
+@endsection
+
+@section('content')
+<div class="ui labels">
+  <a class="ui small label all" href="{{ route('web/language/SpeaksController.index') }}">全部</a>
+  @each(row in dataset.labels)
+    <a class="ui small label all" href="{{ request.url() + '?label=' + row['$loki'] }}">{{ row.label }}</a>
+  @endeach
+</div>
+<div class="ui divided items">
+  <div class="item">
+    <div class="extra">
+      <a class="left floated" onclick="loading()">添加口语</a>
+      <span class="right floated">共 {{ dataset.data.total || 0 }} 条数据</span>
+    </div>
+  </div>
+  @each((row, index) in dataset.speaks)
+    <div class="item">
+      @if(row.image)
+        <img class="ui tiny image bordered rounded" src="{{ row.image }}" />
+      @endif
+      <div class="middle aligned content">
+        <a class="header" href="{{ route('web/language/SpeaksController.edit', { id: row['$loki'] }) }}">{{ row['$loki'] }}. {{ row.speak }}</a>
+        <p class="description">{{ row.description }}</p>
+        <div class="extra">
+          <div class="left floated">{{ row.language }} - {{ row.label.label || '未分标签' }} - {{ row.meta.created }}</div>
+          <a class="right floated play-audio" data-audio="{{ row.audio }}">
+            <i class="ui green play icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  @endeach
+  <div class="item">
+    <div class="extra">
+      <div class="left floated">
+        <a href="{{ request.url() + '?page=' + dataset.data.lastPage }}">下一页</a>
+        @if(dataset.data.perPage > 0)
+          <a href="{{ request.url() + '?page=' + dataset.data.perPage }}">上一页</a>
+        @endif
+      </div>
+      <span class="right floated">当前第 {{ dataset.data.page }} 页</span>
+    </div>
+  </div>
+</div>
+<form class="ui form tiny modal" method="post" action="{{ route('web/language/SpeaksController.create') }}">
+  <i class="close icon"></i>
+  <div class="header">
+    添加口语
+  </div>
+  <div class="image content">
+    <div class="description">
+      <div class="field">
+        <label>标签</label>
+        <div class="ui multiple selection search multiple dropdown">
+          <input type="hidden" name="label" value="">
+          <i class="dropdown icon"></i>
+          <div class="default text">选择</div>
+          <div class="menu">
+            @each(row in dataset.labels)
+              <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
+            @endeach
+          </div>
+        </div>
+      </div>
+      <div class="field">
+        <label>口语</label>
+        <input type="text" name="speak" placeholder="请输入口语" />
+      </div>
+      <div class="field">
+        <label>释义</label>
+        <input type="text" name="description" placeholder="请输入释义" />
+      </div>
+      <div class="field">
+        <label>图片</label>
+        <input type="url" name="image" placeholder="请输入图片地址 URL" />
+      </div>
+      <div class="field">
+        <label>媒体</label>
+        <input type="url" name="media" placeholder="请输入媒体地址 URL" />
+      </div>
+    </div>
+  </div>
+  <div class="actions">
+    <div class="ui black deny button">
+      取消
+    </div>
+    <button class="ui button positive right labeled icon button" type="submit">
+      提交
+      <i class="checkmark icon"></i>
+    </button>
+  </div>
+</form>
+<script type="text/javascript">
+</script>
+@endsection

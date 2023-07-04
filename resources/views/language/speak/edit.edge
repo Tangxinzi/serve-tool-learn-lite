@@ -1,0 +1,96 @@
+@layout('components.main')
+
+@section('title')
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title>{{ dataset.title }}</title>
+@endsection
+
+@section('content')
+<form class="ui form" method="post" action="{{ route('web/language/SpeaksController.store') }}">
+  <div class="field" hidden>
+    <label>ID</label>
+    <input type="text" name="id" value="{{ dataset.speak['$loki'] || '' }}" placeholder="" />
+  </div>
+  <div class="field">
+    <label>标签</label>
+    <div class="ui multiple selection search multiple dropdown">
+      <input type="hidden" name="label" value="{{ dataset.speak.label || '' }}">
+      <i class="dropdown icon"></i>
+      <div class="default text">选择</div>
+      <div class="menu">
+        @each(row in dataset.labels)
+          <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
+        @endeach
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>口语</label>
+    <input type="text" name="speak" value="{{ dataset.speak.speak || '' }}" placeholder="请输入口语" />
+  </div>
+  <div class="field">
+    <label>释义</label>
+    <input type="text" name="description" value="{{ dataset.speak.description || '' }}" placeholder="请输入释义" />
+  </div>
+  <div class="field">
+    <label>图片</label>
+    <div class="ui action input">
+      <input type="text" name="image" id="speak-image-url" value="{{ dataset.speak.image || '' }}" placeholder="请输入图片地址 URL" />
+      <div class="ui icon button" data-id="speak-image-url" id="speak_image_tmp">
+        <i class="upload icon"></i>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>媒体</label>
+    <div class="ui action input">
+      <input type="text" name="media" id="speak-media-url" value="{{ dataset.speak.media || '' }}" placeholder="请输入媒体地址 URL" />
+      <div class="ui icon button" data-id="speak-media-url" id="speak_media_tmp">
+        <i class="upload icon"></i>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <button class="ui button positive right labeled icon button" type="submit">
+      提交
+      <i class="checkmark icon"></i>
+    </button>
+  </div>
+</form>
+<script type="text/javascript">
+  function upload() {
+    var datainfo = this.getAttribute('data-id')
+
+    // 创建一个 input 元素用于文件选择
+    var input = document.createElement('input');
+    input.type = 'file';
+
+    // 当选择文件时执行上传操作
+    input.addEventListener('change', function() {
+      var file = input.files[0];
+      var formData = new FormData();
+      formData.append('file', file);
+
+      // 创建 XMLHttpRequest 对象并发送文件
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/upload', true);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          var response = JSON.parse(xhr.response)
+          document.getElementById(datainfo).value = response.data.url
+        } else {
+          console.log('文件上传失败');
+        }
+      };
+      xhr.send(formData);
+    });
+
+    // 模拟点击 input 元素选择文件
+    input.click();
+  }
+
+  document.getElementById('speak_image_tmp').addEventListener('click', upload);
+  document.getElementById('speak_media_tmp').addEventListener('click', upload);
+</script>
+@endsection

@@ -1,0 +1,105 @@
+@layout('components.main')
+
+@section('title')
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title>{{ dataset.title }}</title>
+@endsection
+
+@section('content')
+<form class="ui form" method="post" action="{{ route('web/language/WordsController.store') }}">
+  <div class="field" hidden>
+    <label>ID</label>
+    <input type="text" name="id" value="{{ dataset.word['$loki'] || '' }}" placeholder="" />
+  </div>
+  <div class="field">
+    <label>标签</label>
+    <div class="ui multiple selection search multiple dropdown">
+      <input type="hidden" name="label" value="{{ dataset.word.label || '' }}">
+      <i class="dropdown icon"></i>
+      <div class="default text">选择</div>
+      <div class="menu">
+        @each(row in dataset.labels)
+          <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
+        @endeach
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>单词</label>
+    <div class="ui action input">
+      <input type="text" name="word" value="{{ dataset.word.word || '' }}" placeholder="请输入单词" />
+      <a class="ui icon button" href="{{ dataset.word.audio }}" target="_blank">
+        <i class="play icon"></i>
+      </a>
+    </div>
+  </div>
+  <div class="field">
+    <label>释义</label>
+    <input type="text" name="description" value="{{ dataset.word.description || '' }}" placeholder="请输入释义" />
+  </div>
+  <div class="field">
+    <label>颜色</label>
+    <input type="color" name="color" value="{{ dataset.word.color || '' }}" placeholder="" />
+  </div>
+  <div class="field">
+    <label>图片</label>
+    <div class="ui action input">
+      <input type="text" name="image" id="word-image-url" value="{{ dataset.word.image || '' }}" placeholder="请输入图片地址 URL" />
+      <div class="ui icon button" data-id="word-image-url" id="word_image_tmp">
+        <i class="upload icon"></i>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>媒体</label>
+    <div class="ui action input">
+      <input type="text" name="media" id="word-media-url" value="{{ dataset.word.media || '' }}" placeholder="请输入媒体地址 URL" />
+      <div class="ui icon button" data-id="word-media-url" id="word_media_tmp">
+        <i class="upload icon"></i>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <button class="ui button positive right labeled icon button" type="submit">
+      提交
+      <i class="checkmark icon"></i>
+    </button>
+  </div>
+</form>
+<script type="text/javascript">
+  function upload() {
+    var datainfo = this.getAttribute('data-id')
+
+    // 创建一个 input 元素用于文件选择
+    var input = document.createElement('input');
+    input.type = 'file';
+
+    // 当选择文件时执行上传操作
+    input.addEventListener('change', function() {
+      var file = input.files[0];
+      var formData = new FormData();
+      formData.append('file', file);
+
+      // 创建 XMLHttpRequest 对象并发送文件
+      var xhr = new XMLHttpRequest();
+      xhr.open('POST', '/api/upload', true);
+      xhr.onload = function() {
+        if (xhr.status === 200) {
+          var response = JSON.parse(xhr.response)
+          document.getElementById(datainfo).value = response.data.url
+        } else {
+          console.log('文件上传失败');
+        }
+      };
+      xhr.send(formData);
+    });
+
+    // 模拟点击 input 元素选择文件
+    input.click();
+  }
+
+  document.getElementById('word_image_tmp').addEventListener('click', upload);
+  document.getElementById('word_media_tmp').addEventListener('click', upload);
+</script>
+@endsection
