@@ -37,9 +37,13 @@
     "@adonisjs/session": "^6.2.0",
     "@adonisjs/shield": "^7.0.0",
     "@adonisjs/view": "^6.1.0",
+    "axios": "^1.4.0",
+    "crypto": "^1.0.1",
     "lokijs": "^1.5.12",
+    "md5": "^2.3.0",
     "moment": "^2.29.4",
     "proxy-addr": "^2.0.7",
+    "querystring": "^0.2.1",
     "randomstring": "^1.3.0",
     "reflect-metadata": "^0.1.13",
     "source-map-support": "^0.5.21"

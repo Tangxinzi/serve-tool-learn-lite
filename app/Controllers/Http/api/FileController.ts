@@ -13,40 +13,6 @@ const loadCollection = (collectionName, db) => {
 }
 
 export default class FileController {
-  downloadFile(url, destination) {
-    return new Promise((resolve, reject) => {
-      const fs = require('fs');
-      const https = require('https');
-
-      https.get(url, (response) => {
-        const fileStream = fs.createWriteStream(destination);
-        response.pipe(fileStream);
-
-        // 监听下载完成事件
-        response.on('end', () => {
-          console.log('音频文件下载完成！');
-          resolve(destination);
-        });
-
-        // 监听错误事件
-        response.on('error', (error) => {
-          console.error('下载过程中发生错误：', error);
-          reject(error);
-        });
-      });
-    });
-  }
-
-  public async audio({ request, response }: HttpContextContract) {
-    const all = request.all();
-    const audioUrl = `https://fanyi.baidu.com/gettts?lan=${ all.lan }&text=${ all.text }&spd=${ all.spd || 3 }&source=web`; // 百度翻译音频文件的 URL
-    const destinationPath = Application.publicPath('downloads/language/files/') + 'audio.mp3'; // 下载后保存的文件路径
-    await this.downloadFile(audioUrl, destinationPath);
-
-    setTimeout(() => {}, 1000);
-    response.download(destinationPath, true)
-  }
-
   public async upload({ request, response }: HttpContextContract) {
     const file = request.file('file', {
       size: '10mb',

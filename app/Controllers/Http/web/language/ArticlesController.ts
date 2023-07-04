@@ -27,24 +27,25 @@ export default class articlesController {
     }
 
     for (let index = 0; index < articles.length; index++) {
+      articles[index].image = `${ request.protocol() }://${ request.host() }` + articles[index].image
       articles[index].label = articles[index].label ? labels.get(articles[index].label) : {}
       articles[index].audio = `https://fanyi.baidu.com/gettts?lan=${ articles[index].language }&text=${ articles[index].article }&spd=3&source=web`
       articles[index].meta.created = Moment(articles[index].meta.created).format('YYYY-MM-DD HH:mm:ss')
     }
 
-    return view.render('language/article/index', {
-      dataset: {
-        title: '文章',
-        articles: articles.reverse(),
-        labels: labels.data,
-        data: {
-          total,
-          page,
-          perPage: parseInt(page) - 1,
-          lastPage: parseInt(page) + 1,
-        }
+    const dataset = {
+      title: '文章',
+      articles: articles.reverse(),
+      labels: labels.data,
+      data: {
+        total,
+        page,
+        perPage: parseInt(page) - 1,
+        lastPage: parseInt(page) + 1,
       }
-    })
+    }
+
+    return request.url() == '/web/language/article' ? view.render('language/article/index', { dataset }) : dataset
   }
 
   public async create({ request, response, session, view }: HttpContextContract) {
@@ -83,7 +84,17 @@ export default class articlesController {
     response.redirect().back()
   }
 
-  public async show({ params, view }: HttpContextContract) {}
+  public async show({ params, view }: HttpContextContract) {
+    const collection = await loadCollection('articles', db)
+    const labels = await loadCollection('labels', dbLabels)
+    const dataset = {
+      title: '文章',
+      labels: labels.data,
+      article: collection.get(params.id) || {}
+    }
+
+    return dataset.article
+  }
 
   public async edit({ params, view }: HttpContextContract) {
     const collection = await loadCollection('articles', db)

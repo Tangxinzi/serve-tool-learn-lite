@@ -1,11 +1,7 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+const LokidbName = require('../../templates/LokidbName')
 const LokiCollection = require('../../templates/LokiCollection')
 const Moment = require('moment')
-Moment.locale('zh-cn')
-const Loki = require('lokijs')
-const db = new Loki('public/database/language/speaks.json', { persistenceMethod: 'fs' })
-const dbLabels = new Loki('public/database/language/labels.json', { persistenceMethod: 'fs' })
-const dbSetting = new Loki('public/database/language/setting.json', { persistenceMethod: 'fs' })
 
 export default class SpeaksController {
   public async index({ view, request }: HttpContextContract) {
@@ -45,10 +41,8 @@ export default class SpeaksController {
 
   public async create({ request, response, session, view }: HttpContextContract) {
     const all = request.all()
-    const speaks = await LokiCollection.speaks()
     const setting = await LokiCollection.setting()
-    const db = new Loki('public/database/language/speaks.json', { persistenceMethod: 'fs' })
-
+    const speaks = await LokiCollection.loadCollection('speaks', LokidbName.database.speaks)
     const result = speaks.insert({
       language: setting.language ? setting.language : 'kor',
       label: all.label,
@@ -57,13 +51,14 @@ export default class SpeaksController {
       image: all.image,
       media: all.media,
     })
-    db.saveDatabase()
+
+    LokidbName.database.speaks.saveDatabase()
     response.redirect().back()
   }
 
   public async store({ request, response, session, view }: HttpContextContract) {
     const all = request.all()
-    const speaks = await LokiCollection.speaks()
+    const speaks = await LokiCollection.loadCollection('speaks', LokidbName.database.speaks)
     var item = speaks.get(all.id)
 
     item.label = all.label,
@@ -73,7 +68,7 @@ export default class SpeaksController {
     item.media = all.media
 
     speaks.update(item);
-    db.saveDatabase()
+    LokidbName.database.speaks.saveDatabase()
     response.redirect().back()
   }
 

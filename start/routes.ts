@@ -56,18 +56,21 @@ Route.group(() => {
 }).prefix('/web/language')
 
 Route.group(() => {
-  Route.get('/audio', 'api/FileController.audio')
+  Route.get('/audio', 'api/TranslateController.audio')
+  Route.get('/translate', 'api/TranslateController.index')
   Route.post('/upload', 'api/FileController.upload')
 
   Route.group(() => {
     Route.get('/pronounce', 'api/PronouncesController.index')
 
+    Route.get('/article', 'web/language/ArticlesController.index')
+    Route.get('/article/:id', 'web/language/ArticlesController.show')
+    
+    Route.get('/setting', 'web/language/SettingsController.index')
     Route.get('/word', 'web/language/WordsController.index')
     Route.get('/word/label', 'web/language/WordsController.label')
-
     Route.get('/grammar', 'web/language/GrammarsController.index')
     Route.get('/grammar/show/:id', 'web/language/GrammarsController.show')
-
     Route.get('/speak', 'web/language/SpeaksController.index')
     Route.get('/speak/show/:id', 'web/language/SpeaksController.show')
   }).prefix('/language')

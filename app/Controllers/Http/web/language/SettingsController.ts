@@ -19,14 +19,13 @@ export default class SettingsController {
     const all = request.all()
     const labels = await loadCollection('labels', dbLabels)
     const collection = await loadCollection('setting', db)
+    const dataset = {
+      title: '设置',
+      labels: labels.data,
+      setting: collection.get(1)
+    }
 
-    return view.render('language/setting/index', {
-      dataset: {
-        title: '设置',
-        labels: labels.data,
-        setting: collection.get(1)
-      }
-    })
+    return request.url() == '/web/language/setting' ? view.render('language/setting/index', { dataset }) : dataset.setting
   }
 
   public async store({ view, response, request }: HttpContextContract) {
@@ -37,7 +36,7 @@ export default class SettingsController {
     item.speaks = all.speaks
     item.words = all.words
     item.notice = all.notice
-    
+
     collection.update(item);
     db.saveDatabase()
     response.redirect().back()

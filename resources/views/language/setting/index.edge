@@ -10,7 +10,7 @@
 <div class="ui segment">
   <form class="ui form" action="{{ route('web/language/SettingsController.store') }}" method="post">
     <div class="field">
-      <label>语言</label>
+      <label>设置语言</label>
       <div class="ui fluid selection dropdown">
         <input type="hidden" name="language" value="{{ dataset.setting.language || '' }}">
         <i class="dropdown icon"></i>
@@ -49,7 +49,7 @@
       </div>
     </div>
     <div class="field">
-      <label for="word">通知</label>
+      <label for="word">活动通知</label>
       <textarea name="notice" rows="8" cols="80">{{ dataset.setting.notice || '' }}</textarea>
     </div>
     <div class="field">
