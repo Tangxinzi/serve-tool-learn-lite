@@ -23,6 +23,32 @@
       </div>
     </div>
     <div class="field">
+      <label for="articles">文章标签</label>
+      <div id="articles" class="ui fluid multiple search selection dropdown">
+        <input type="hidden" name="articles" value="{{ dataset.setting.articles || '' }}">
+        <i class="dropdown icon"></i>
+        <div class="default text">选择</div>
+        <div class="menu">
+          @each(row in dataset.labels)
+            <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
+          @endeach
+        </div>
+      </div>
+    </div>
+    <div class="field">
+      <label for="grammar">语法标签</label>
+      <div id="grammar" class="ui fluid multiple search selection dropdown">
+        <input type="hidden" name="grammars" value="{{ dataset.setting.grammars || '' }}">
+        <i class="dropdown icon"></i>
+        <div class="default text">选择</div>
+        <div class="menu">
+          @each(row in dataset.labels)
+            <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
+          @endeach
+        </div>
+      </div>
+    </div>
+    <div class="field">
       <label for="speak">口语标签</label>
       <div id="speak" class="ui fluid multiple search selection dropdown">
         <input type="hidden" name="speaks" value="{{ dataset.setting.speaks || '' }}">

@@ -27,7 +27,7 @@
       @endif
       <div class="middle aligned content">
         <a class="header" href="{{ route('web/language/ArticlesController.edit', { id: row['$loki'] }) }}">{{ ((dataset.data.page - 1) * 10) + index + 1 }}. {{ row.title }}</a>
-        <p class="description">{{ row.description }}</p>
+        <p class="description">{{ row.description || '' }}</p>
         <div class="extra">
           <div class="left floated">{{ row.language }} - {{ row.label.label || '未分标签' }} - {{ row.meta.created }}</div>
         </div>

@@ -34,7 +34,7 @@ export default class GrammarsController {
           speaks: grammar.speaks,
           words: grammar.words,
         }
-      }).simplesort('').offset((page - 1) * pageSize).limit(pageSize).data()
+      }).simplesort('$loki', true).offset((page - 1) * pageSize).limit(pageSize).data()
     }
 
     for (let index = 0; index < grammars.length; index++) {

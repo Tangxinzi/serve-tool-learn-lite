@@ -33,6 +33,8 @@ export default class SettingsController {
     const collection = await loadCollection('setting', db)
     var item = collection.get(1)
     item.language = all.language
+    item.articles = all.articles
+    item.grammars = all.grammars
     item.speaks = all.speaks
     item.words = all.words
     item.notice = all.notice
