@@ -70,7 +70,8 @@ export default class GrammarsController {
       detail: all.detail,
       description: all.description ? all.description.substring(0, 140) : all.text.substring(0, 140),
       image: all.image,
-      media: all.media,
+      audio: all.audio,
+      video: all.video,
     })
     db.saveDatabase()
     response.redirect().back()
@@ -86,7 +87,8 @@ export default class GrammarsController {
     item.detail = all.detail,
     item.description = all.description ? all.description.substring(0, 140) : all.text.substring(0, 140),
     item.image = all.image,
-    item.media = all.media
+    item.audio = all.audio,
+    item.video = all.video,
 
     collection.update(item);
     db.saveDatabase()

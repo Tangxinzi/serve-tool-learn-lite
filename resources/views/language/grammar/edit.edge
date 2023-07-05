@@ -8,7 +8,7 @@
 
 @section('style')
 <link href="https://unpkg.com/@wangeditor/editor@latest/dist/css/style.css" rel="stylesheet">
-<style media="screen">
+<style audio="screen">
   #editor—wrapper { border: 1px solid #ccc; z-index: 100; }
   #toolbar-container { border-bottom: 1px solid #ccc; }
   #editor-container { height: 500px; }
@@ -49,11 +49,21 @@
     </div>
   </div>
   <div class="field">
-    <label>媒体</label>
+    <label>音频媒体</label>
     <div class="ui action left icon input">
       <i class="unmute icon"></i>
-      <input type="text" name="media" id="grammar-media-url" value="{{ dataset.grammar.media || '' }}" placeholder="请输入媒体地址 URL" />
-      <div class="ui icon button" data-id="grammar-media-url" id="grammar_media_tmp">
+      <input type="text" name="audio" id="grammar-audio-url" value="{{ dataset.grammar.audio || '' }}" placeholder="请输入媒体地址 URL" />
+      <div class="ui icon button" data-id="grammar-audio-url" id="grammar_audio_tmp">
+        <i class="upload icon"></i>
+      </div>
+    </div>
+  </div>
+  <div class="field">
+    <label>视频媒体</label>
+    <div class="ui action left icon input">
+      <i class="video icon"></i>
+      <input type="text" name="video" id="grammar-video-url" value="{{ dataset.grammar.video || '' }}" placeholder="请输入媒体地址 URL" />
+      <div class="ui icon button" data-id="grammar-video-url" id="grammar_video_tmp">
         <i class="upload icon"></i>
       </div>
     </div>
@@ -317,7 +327,7 @@
   }
 
   document.getElementById('grammar_image_tmp').addEventListener('click', upload);
-  document.getElementById('grammar_media_tmp').addEventListener('click', upload);
+  document.getElementById('grammar_audio_tmp').addEventListener('click', upload);
 </script>
 @endsection
 
