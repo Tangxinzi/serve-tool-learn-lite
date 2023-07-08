@@ -1,0 +1,40 @@
+@layout('components.main')
+
+@section('title')
+<meta name="keyspeaks" content="" />
+<meta name="description" content="" />
+<title>{{ dataset.title }}</title>
+@endsection
+
+@section('content')
+<div class="ui mobile middle aligned center aligned grid">
+  <div class="eight wide column">
+    <h2 class="ui teal image header">
+      <div class="content">
+        登录您的账号
+      </div>
+    </h2>
+    <form class="ui form" method="post" action="{{ route('web/language/UsersController.login') }}">
+      <div class="ui segment">
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="user icon"></i>
+            <input type="text" name="user" placeholder="E-mail address">
+          </div>
+        </div>
+        <div class="field">
+          <div class="ui left icon input">
+            <i class="lock icon"></i>
+            <input type="password" name="password" placeholder="Password">
+          </div>
+        </div>
+        <button class="ui fluid large teal submit button" type="submit">登录</button>
+      </div>
+      <div class="ui error message"></div>
+    </form>
+    <div class="ui message">
+      登录管理平台
+    </div>
+  </div>
+</div>
+@endsection

@@ -95,16 +95,14 @@ export default class GrammarsController {
     response.redirect().back()
   }
 
-  public async show({ params, request, view }: HttpContextContract) {
+  public async show({ params, request, view, route }: HttpContextContract) {
     const collection = await loadCollection('grammars', db)
     const dataset = {
-      data: {
-        title: '语法',
-        grammar: collection.get(params.id) || {}
-      }
+      title: '语法',
+      grammar: collection.get(params.id) || {}
     }
 
-    return request.url() == '/web/language/grammar/show' ? null : dataset
+    return route.pattern == '/web/language/grammar/show/:id' ? view.render('language/grammar/show', { dataset }) : dataset
   }
 
   public async edit({ params, view }: HttpContextContract) {

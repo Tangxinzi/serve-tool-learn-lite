@@ -1,0 +1,109 @@
+@layout('components.main')
+
+@section('title')
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title>{{ dataset.title }}</title>
+@endsection
+
+@section('style')
+<link href="https://unpkg.com/@wangeditor/editor@latest/dist/css/style.css" rel="stylesheet">
+<style audio="screen">
+  #editor—wrapper { border: 1px solid #ccc; z-index: 100; }
+  #toolbar-container { border-bottom: 1px solid #ccc; }
+  #editor-container { height: 500px; }
+</style>
+@endsection
+
+@section('content')
+<div class="main">
+  <div class="ui divided items">
+    <div class="item">
+      <div class="extra">
+        <a class="left floated">{{ dataset.grammar.title || '' }}</a>
+        <span class="right floated">
+          <a class="right floated play-audio" data-audio="{{ dataset.grammar.audio }}">
+            <i class="ui green play icon"></i>
+          </a>
+        </span>
+      </div>
+    </div>
+    <div class="item">
+      <div class="content">
+        <p>{{{ dataset.grammar.description || '' }}}</p>
+        <br />
+        {{{ dataset.grammar.detail || '' }}}
+      </div>
+    </div>
+  </div>
+</div>
+@if(dataset.grammar.talks && dataset.grammar.talks.length)
+<div class="ui divided items">
+  <div class="item">
+    <div class="extra">
+      <a class="left floated">对话</a>
+      <span class="right floated">共 {{ dataset.grammar.talks.length || 0 }} 条数据</span>
+    </div>
+  </div>
+  @each((row, index) in dataset.grammar.talks.talk)
+    <div class="item">
+      <div class="middle aligned content">
+        <a class="header">{{ dataset.grammar.talks.talk[index] }}</a>
+        <div class="extra">
+          <span class="left floated">{{ dataset.grammar.talks.text[index] }}</span>
+          <a class="right floated play-audio" data-audio="/api/audio?lan={{ dataset.grammar.language }}&text={{ dataset.grammar.talks.talk[index] }}">
+            <i class="ui green play icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  @endeach
+</div>
+@endif
+@if(dataset.grammar.speaks && dataset.grammar.speaks.length)
+<div class="ui divided items">
+  <div class="item">
+    <div class="extra">
+      <a class="left floated">例句</a>
+      <span class="right floated">共 {{ dataset.grammar.speaks.length || 0 }} 条数据</span>
+    </div>
+  </div>
+  @each((row, index) in dataset.grammar.speaks.speak)
+    <div class="item">
+      <div class="middle aligned content">
+        <a class="header">{{ dataset.grammar.speaks.speak[index] }}</a>
+        <div class="extra">
+          <span class="left floated">{{ dataset.grammar.speaks.text[index] }}</span>
+          <a class="right floated play-audio" data-audio="/api/audio?lan={{ dataset.grammar.language }}&text={{ dataset.grammar.speaks.speak[index] }}">
+            <i class="ui green play icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  @endeach
+</div>
+@endif
+@if(dataset.grammar.words && dataset.grammar.words.length)
+<div class="ui divided items">
+  <div class="item">
+    <div class="extra">
+      <a class="left floated">词汇</a>
+      <span class="right floated">共 {{ dataset.grammar.words.length || 0 }} 条数据</span>
+    </div>
+  </div>
+  @each((row, index) in dataset.grammar.words.word)
+    <div class="item">
+      <div class="middle aligned content">
+        <a class="header">{{ dataset.grammar.words.word[index] }}</a>
+        <div class="extra">
+          <span class="left floated">{{ dataset.grammar.words.text[index] }}</span>
+          <a class="right floated play-audio" data-audio="/api/audio?lan={{ dataset.grammar.language }}&text={{ dataset.grammar.words.word[index] }}">
+            <i class="ui green play icon"></i>
+          </a>
+        </div>
+      </div>
+    </div>
+  @endeach
+</div>
+@endif
+@endsection

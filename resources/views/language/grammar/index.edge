@@ -26,7 +26,10 @@
         <img class="ui tiny image bordered rounded" src="{{ row.image }}" />
       @endif
       <div class="middle aligned content">
-        <a class="header" href="{{ route('web/language/GrammarsController.edit', { id: row['$loki'] }) }}">{{ row.title }}</a>
+        <div class="header">
+          <a href="{{ route('web/language/GrammarsController.show', { id: row['$loki'] }) }}">{{ row.title }} </a>
+          <a href="{{ route('web/language/GrammarsController.edit', { id: row['$loki'] }) }}">[编辑]</a>
+        </div>
         <p class="description">{{ row.description }}</p>
         <div class="extra">
           <div class="left floated">{{ row.language }} - {{ row.label.label || '未分标签' }} - {{ row.meta.created }}</div>

@@ -7,20 +7,6 @@
 @endsection
 
 @section('content')
-<div class="ui cards">
-  @each(row in dataset.speaks)
-    <a class="card" href="{{ route('web/language/SpeaksController.edit', { id: row['$loki'] }) }}">
-      <div class="content">
-        @if(row.image)
-          <img class="right floated mini ui image" src="{{ row.image }}" />
-        @endif
-        <div class="header">{{ row.speak }}</div>
-        <div class="meta"></div>
-        <div class="description">{{ row.description }}</div>
-      </div>
-    </a>
-  @endeach
-</div>
 <table class="ui celled striped table">
   <tbody>
     @each(row in dataset.files)

@@ -32,7 +32,7 @@
     @!component('components.menus', dataset=dataset, csrf=csrfField())
     <div class="ui container" style="min-height: 500px;">
       <div class="flex-between">
-        <h2>{{ dataset.title }}</h2>
+        <h2>{{ dataset.title || '' }}</h2>
         <div class="ui transparent icon input">
           <input type="text" placeholder="搜索...">
           <i class="search link icon"></i>
@@ -46,6 +46,7 @@
       </div>
       <div class="ui relaxed horizontal list">
         <span class="item" href=""><i class="kr flag"></i>韩语</span>
+        <span class="item" href=""><i class="jp flag"></i>日语</span>
       </div>
     </footer>
   </div>
