@@ -95,12 +95,26 @@ export default class GrammarsController {
     response.redirect().back()
   }
 
+  addDomainToImagePath(str, domain) {
+    var pattern = /src="([^"]+)"/gi;
+    var result = str.replace(pattern, function(match, path) {
+      if (!path.startsWith('http://') && !path.startsWith('https://')) {
+        return 'src="' + domain + path + '"';
+      }
+      return match;
+    });
+
+    return result;
+  }
+
   public async show({ params, request, view, route }: HttpContextContract) {
     const collection = await loadCollection('grammars', db)
     const dataset = {
       title: '语法',
       grammar: collection.get(params.id) || {}
     }
+
+    dataset.grammar.detail = this.addDomainToImagePath(dataset.grammar.detail, `${ request.protocol() }://${ request.host() }`)
 
     return route.pattern == '/web/language/grammar/show/:id' ? view.render('language/grammar/show', { dataset }) : dataset
   }
