@@ -1,35 +1,43 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
-const Loki = require('lokijs')
-const db = new Loki('public/database/language/labels.json', { persistenceMethod: 'fs' })
-const loadCollection = (collectionName, db) => {
-  return new Promise(resolve => {
-    db.loadDatabase({}, () => {
-      const collection = db.getCollection(collectionName) || db.addCollection(collectionName)
-      resolve(collection)
-    })
-  })
-}
+const LokidbName = require('../../templates/LokidbName')
+const LokiCollection = require('../../templates/LokiCollection')
 
 export default class LabelsController {
-  public async index({ view }: HttpContextContract) {
-    const collection = await loadCollection('labels', db)
+  public async index({ view, request }: HttpContextContract) {
+    var all = request.all()
+    var labels = await LokiCollection.labels(), label = {}
+
+    if (all.label) label = labels.get(all.label)
+
     return view.render('language/label/index', {
       dataset: {
         title: '标签',
-        labels: collection.data,
-        label: {}
+        labels: labels.data,
+        label
       }
     })
   }
 
   public async create({ request, response, session, view }: HttpContextContract) {
     const all = request.all()
-    const collection = await loadCollection('labels', db)
-    const result = collection.insert({
-      label: all.label,
-      description: all.description,
-    })
-    db.saveDatabase()
+    const labels = await LokiCollection.loadCollection('labels', LokidbName.database.labels)
+
+    if (all.submit == 'create') {
+      labels.insert({
+        label: all.label,
+        description: all.description,
+      })
+    }
+
+    if (all.submit == 'update') {
+      var label = labels.get(all.id)
+      label.label = all.label,
+      label.description = all.description
+
+      labels.update(label);
+    }
+
+    LokidbName.database.labels.saveDatabase()
     response.redirect().back()
   }
 }

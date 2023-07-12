@@ -9,7 +9,7 @@
 @section('content')
 <div class="ui labels">
   @each(row in dataset.labels)
-    <div class="ui small label all">{{ row.label }}</div>
+    <a class="ui small label all" href="{{ request.url() + '?label=' + row['$loki'] }}">{{ row.label }}</a>
   @endeach
 </div>
 <div class="ui segment">
@@ -27,8 +27,8 @@
       <input type="text" name="description" value="{{ dataset.label.description || '' }}" placeholder="请输入释义" />
     </div>
     <div class="field">
-      <button class="ui button positive right labeled icon button" type="submit">
-        提交
+      <button class="ui button positive right labeled icon button" type="submit" name="submit" value="{{ dataset.label['$loki'] ? 'update' : 'create' }}">
+        {{ dataset.label['$loki'] ? '更新' : '提交' }}
         <i class="checkmark icon"></i>
       </button>
     </div>

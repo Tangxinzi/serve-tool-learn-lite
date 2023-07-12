@@ -45,6 +45,7 @@ export default class GrammarsController {
     var dataset = {
       title: '语法',
       grammars: grammars.reverse(),
+      label: all.label ? labels.get(parseInt(all.label)) : {},
       labels: labels.data,
       data: {
         total,
