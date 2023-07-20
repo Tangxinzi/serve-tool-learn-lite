@@ -30,7 +30,7 @@
           <a href="{{ route('web/language/GrammarsController.show', { id: row['$loki'] }) }}">{{ row.title }} </a>
           <a href="{{ route('web/language/GrammarsController.edit', { id: row['$loki'] }) }}">[编辑]</a>
         </div>
-        <p class="description">{{ row.description }}</p>
+        <p class="description">{{ row.description || '' }}</p>
         <div class="extra">
           <div class="left floated">{{ row.language }} - {{ row.label.label || '未分标签' }} - {{ row.meta.created }}</div>
           <div class="right floated">{{ row.talks ? row.talks.length : 0 }} 条对话 - {{ row.speaks ? row.speaks.length : 0 }} 条例句 - {{ row.words ? row.words.length : 0 }} 个单词</div>

@@ -24,7 +24,7 @@
     </div>
     <div class="field">
       <label>释义</label>
-      <input type="text" name="description" value="{{ dataset.label.description || '' }}" placeholder="请输入释义" />
+      <textarea name="description" rows="8" cols="80" placeholder="请输入释义">{{ dataset.label.description || '' }}</textarea>
     </div>
     <div class="field">
       <button class="ui button positive right labeled icon button" type="submit" name="submit" value="{{ dataset.label['$loki'] ? 'update' : 'create' }}">
