@@ -55,6 +55,7 @@ Route.group(() => {
     Route.post('/word/store', 'web/language/WordsController.store')
 
     Route.get('/file', 'web/language/FilesController.index')
+    Route.post('/file/destroy', 'web/language/FilesController.destroy')
 
     Route.get('/label', 'web/language/LabelsController.index')
     Route.post('/label', 'web/language/LabelsController.create')

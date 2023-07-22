@@ -63,6 +63,8 @@ export default class articlesController {
       media: all.media,
     })
     db.saveDatabase()
+
+    session.flash('message', { type: 'success', header: '创建成功', message: `${ all.title } 已创建。` })
     response.redirect().back()
   }
 
@@ -80,6 +82,8 @@ export default class articlesController {
 
     collection.update(item);
     db.saveDatabase()
+
+    session.flash('message', { type: 'success', header: '更新成功', message: `${ all.title } 已更新。` })
     response.redirect().back()
   }
 

@@ -33,11 +33,12 @@ export default class LabelsController {
       var label = labels.get(all.id)
       label.label = all.label,
       label.description = all.description
-
       labels.update(label);
     }
 
     LokidbName.database.labels.saveDatabase()
+
+    session.flash('message', { type: 'success', header: '操作成功', message: `${ all.label }${ all.submit == 'create' ? '已创建' : '已更新' }` })
     response.redirect().back()
   }
 }

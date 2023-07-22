@@ -80,6 +80,8 @@ export default class WordsController {
       media: all.media,
     })
     db.saveDatabase()
+
+    session.flash('message', { type: 'success', header: '创建成功', message: `${ all.word } 已创建。` })
     response.redirect().back()
   }
 
@@ -97,6 +99,8 @@ export default class WordsController {
 
     collection.update(item);
     db.saveDatabase()
+
+    session.flash('message', { type: 'success', header: '更新成功', message: `${ all.word } 已更新。` })
     response.redirect().back()
   }
 

@@ -28,7 +28,7 @@ export default class SettingsController {
     return request.url() == '/web/language/setting' ? view.render('language/setting/index', { dataset }) : dataset.setting
   }
 
-  public async store({ view, response, request }: HttpContextContract) {
+  public async store({ view, response, request, session }: HttpContextContract) {
     const all = request.all()
     const collection = await loadCollection('setting', db)
     var item = collection.get(1)
@@ -41,6 +41,8 @@ export default class SettingsController {
 
     collection.update(item);
     db.saveDatabase()
+
+    session.flash('message', { type: 'success', header: '更新成功', message: `设置已更新。` })
     response.redirect().back()
   }
 }

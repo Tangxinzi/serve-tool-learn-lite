@@ -76,6 +76,8 @@ export default class GrammarsController {
       video: all.video,
     })
     db.saveDatabase()
+
+    session.flash('message', { type: 'success', header: '创建成功', message: `${ all.title }已创建，点击<a href="/web/language/grammar/show/${ result['$loki'] }">查看</a>、<a href="/web/language/grammar/edit/${ result['$loki'] }">编辑</a>内容。` })
     response.redirect().back()
   }
 
@@ -95,6 +97,8 @@ export default class GrammarsController {
 
     collection.update(item);
     db.saveDatabase()
+
+    session.flash('message', { type: 'success', header: '更新成功', message: `${ all.title }已更新。` })
     response.redirect().back()
   }
 
@@ -146,6 +150,8 @@ export default class GrammarsController {
 
     collection.update(item);
     db.saveDatabase()
+
+    session.flash('message', { type: 'success', header: '更新成功', message: `${ all.title }已更新。` })
     response.redirect().back()
   }
 

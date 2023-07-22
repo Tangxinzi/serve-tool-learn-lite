@@ -53,6 +53,8 @@ export default class SpeaksController {
     })
 
     LokidbName.database.speaks.saveDatabase()
+    
+    session.flash('message', { type: 'success', header: '创建成功', message: `${ all.speak } 已创建。` })
     response.redirect().back()
   }
 
@@ -69,6 +71,8 @@ export default class SpeaksController {
 
     speaks.update(item);
     LokidbName.database.speaks.saveDatabase()
+
+    session.flash('message', { type: 'success', header: '更新成功', message: `${ all.speak } 已更新。` })
     response.redirect().back()
   }
 

@@ -18,6 +18,8 @@
     nav.navigation .ui.items .item { margin: 0.75rem 0; color: rgba(0,0,0,.45); }
     nav.navigation .ui.items .item.active { color: rgba(0,0,0,1); }
     .flex-between { display: flex; flex-direction: row; justify-content: space-between; }
+    .item .edit { opacity: 0; transition: .3s opacity; }
+    .item:hover .edit { opacity: 0.75; }
   </style>
   @!section('style')
 </head>
@@ -38,6 +40,15 @@
           <i class="search link icon"></i>
         </div>
       </div>
+          
+      @if(flashMessages.get('message'))
+        @!component('components.alert', {
+          type: [flashMessages.get('message.type')],
+          header: [flashMessages.get('message.header')],
+          message: [flashMessages.get('message.message')]
+        })
+      @endif
+      
       @!section('content')
     </div>
     <footer class="ui container" style="min-height: auto; margin: 30px 0;">
@@ -53,7 +64,7 @@
 
   <script src="https://unpkg.com/jquery@3.3.1/dist/jquery.min.js"></script>
   <script src="/semantic/semantic.min.js" charset="utf-8"></script>
-  <script src="/script/global.js" charset="utf-8"></script>
+  {{--  <script src="/script/global.js" charset="utf-8"></script>  --}}
   <script type="text/javascript">
     $('.ui.sidebar')
       .sidebar('setting', 'dimPage', true)

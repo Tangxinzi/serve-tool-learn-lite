@@ -16,9 +16,46 @@
       <td>{{ row.type }}</td>
       <td>{{ row.size }}</td>
       <td>{{ row.meta.created }}</td>
-      <td>删除</td>
+      <td>
+        <a onclick="modal({{ row['$loki'] }}, '{{ row.path }}')">删除</a>
+      </td>
     </tr>
     @endeach
   </tbody>
 </table>
+
+<form class="ui form basic mini modal" action="{{ route('web/language/FilesController.destroy') }}" method="post">
+  <div class="ui icon header">
+    <i class="alert icon"></i>
+    <br />
+    文件操作
+  </div>
+  <div class="content">
+    <div class="field" hidden>
+      <input id="id" class="ui input" name="id" type="number" value="" />
+    </div>
+    <div class="field" hidden>
+      <input id="path" class="ui input" name="path" type="text" value="" />
+    </div>
+    <p>删除后的文件无法恢复，并且关联的数据信息将被删除，确定继续吗？</p>
+  </div>
+  <div class="actions">
+    <div class="ui red basic cancel inverted button">
+      <i class="remove icon"></i>
+      取消
+    </div>
+    <button class="ui green ok inverted button" type="submit">
+      <i class="checkmark icon"></i>
+      确定
+    </button>
+  </div>
+</form>
+
+<script>
+  function modal (id, path) {
+    $('#id').val(id)
+    $('#path').val(path)
+    $('.ui.modal.basic').modal('setting', 'transition', 'fade up').modal('setting', 'closable', false).modal('show')
+  }
+</script>
 @endsection

@@ -28,7 +28,7 @@
       <div class="middle aligned content">
         <div class="header">
           <a href="{{ route('web/language/GrammarsController.show', { id: row['$loki'] }) }}">{{ row.title }} </a>
-          <a href="{{ route('web/language/GrammarsController.edit', { id: row['$loki'] }) }}">[编辑]</a>
+          <a class="edit" href="{{ route('web/language/GrammarsController.edit', { id: row['$loki'] }) }}">[编辑]</a>
         </div>
         <p class="description">{{ row.description || '' }}</p>
         <div class="extra">
