@@ -47,7 +47,6 @@ export default class TranslateController {
 
         // 监听下载完成事件
         response.on('end', () => {
-          console.log('音频文件下载完成！');
           resolve(destination);
         });
 
@@ -62,7 +61,8 @@ export default class TranslateController {
 
   public async audio({ request, response }: HttpContextContract) {
     const all = request.all();
-    const audioUrl = `https://fanyi.baidu.com/gettts?lan=${ all.lan }&text=${ all.text }&spd=${ all.spd || 3 }&source=web`; // 百度翻译音频文件的 URL
+    // const audioUrl = `https://fanyi.baidu.com/gettts?lan=${ all.lan }&text=${ all.text }&spd=${ all.spd || 3 }&source=web`; // 百度翻译音频文件的 URL
+    const audioUrl = `https://dict.youdao.com/dictvoice?audio=${ all.text }&spd=${ all.spd || 3 }&le=${ all.lan == 'kor' ? 'ko' : all.lan }`; // 百度翻译音频文件的 URL
     const destinationPath = Application.publicPath('downloads/language/files/') + 'audio.mp3'; // 下载后保存的文件路径
     await this.downloadFile(audioUrl, destinationPath);
 
