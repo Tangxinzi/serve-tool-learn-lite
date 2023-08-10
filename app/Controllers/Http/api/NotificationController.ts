@@ -1,16 +1,14 @@
 import type { HttpContextContract } from '@ioc:Adonis/Core/HttpContext'
+import Env from '@ioc:Adonis/Core/Env'
 import Application from '@ioc:Adonis/Core/Application'
 const Moment = require('moment')
+const axios = require('axios');
 const LokidbName = require('../templates/LokidbName')
 const LokiCollection = require('../templates/LokiCollection')
 
-const axios = require('axios');
-const appId = 'wx26bac2472f16d2d4';
-const appSecret = 'f1e489d2b843fd956a58dbbdc8ccfe2a';
-
 export default class NotificationController {
   async token() {
-    return await axios.get(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${ appId }&secret=${ appSecret }`)
+    return await axios.get(`https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=${ Env.get('AppId') }&secret=${ Env.get('AppSecret') }`)
       .then((response) => {
         return response.data;
       })
@@ -20,7 +18,7 @@ export default class NotificationController {
   }
 
   async jscode2session(code) {
-    return await axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=${appId}&secret=${appSecret}&js_code=${code}&grant_type=authorization_code`)
+    return await axios.get(`https://api.weixin.qq.com/sns/jscode2session?appid=${ Env.get('AppId') }&secret=${ Env.get('AppSecret') }&js_code=${ code }&grant_type=authorization_code`)
       .then((response) => {
         return response.data;
       })
