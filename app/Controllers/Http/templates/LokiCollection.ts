@@ -18,6 +18,15 @@ const labels = () => {
   })
 }
 
+// 签到
+const signs = () => {
+  return new Promise(async (resolve) => {
+    const dbSigns = new Loki('public/database/language/signs.json', { persistenceMethod: 'fs' })
+    var signs = await loadCollection('signs', dbSigns)
+    resolve(signs)
+  })
+}
+
 // 口语
 const speaks = () => {
   return new Promise(async (resolve) => {
@@ -37,4 +46,4 @@ const setting = () => {
   })
 }
 
-export { loadCollection, labels, speaks, setting }
+export { loadCollection, labels, speaks, setting, signs }

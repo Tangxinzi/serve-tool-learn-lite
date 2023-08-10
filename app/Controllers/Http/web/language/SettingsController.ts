@@ -4,6 +4,7 @@ const Moment = require('moment')
 Moment.locale('zh-cn')
 const Loki = require('lokijs')
 const db = new Loki('public/database/language/setting.json', { persistenceMethod: 'fs' })
+const dbSigns = new Loki('public/database/language/signs.json', { persistenceMethod: 'fs' })
 const dbLabels = new Loki('public/database/language/labels.json', { persistenceMethod: 'fs' })
 const loadCollection = (collectionName, db) => {
   return new Promise(resolve => {
@@ -26,6 +27,24 @@ export default class SettingsController {
     }
 
     return request.url() == '/web/language/setting' ? view.render('language/setting/index', { dataset }) : dataset.setting
+  }
+
+  public async notification({ view, request }: HttpContextContract) {
+    const all = request.all()
+    const signs = await loadCollection('signs', dbSigns)
+    // signs.chain().simplesort('date', 1)
+    signs.find({ date: 1 })
+
+    for (let index = 0; index < signs.data.length; index++) {
+      signs.data[index].meta.created = Moment(signs.data[index].meta.created).format('YYYY-MM-DD HH:mm:ss')
+    }
+
+    const dataset = {
+      title: '消息通知 - 设置',
+      signs: signs.data,
+    }
+
+    return view.render('language/setting/notification', { dataset })
   }
 
   public async store({ view, response, request, session }: HttpContextContract) {

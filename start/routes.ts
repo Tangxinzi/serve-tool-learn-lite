@@ -31,6 +31,7 @@ Route.group(() => {
 
   Route.group(() => {
     Route.get('/setting', 'web/language/SettingsController.index')
+    Route.get('/setting/notification', 'web/language/SettingsController.notification')
     Route.post('/setting/store', 'web/language/SettingsController.store')
 
     Route.get('/article', 'web/language/ArticlesController.index')
@@ -67,6 +68,11 @@ Route.group(() => {
   Route.get('/translate', 'api/TranslateController.index')
   Route.post('/upload', 'api/FileController.upload')
 
+  Route.post('/user/info', 'api/UserController.userinfo')
+
+  Route.post('/notification/sign/create', 'api/NotificationController.signCreate')
+  Route.get('/notification/sign/send', 'api/NotificationController.signSendmessage')
+
   Route.group(() => {
     Route.get('/pronounce', 'api/PronouncesController.index')
 
@@ -74,6 +80,8 @@ Route.group(() => {
     Route.get('/article/:id', 'web/language/ArticlesController.show')
 
     Route.get('/setting', 'web/language/SettingsController.index')
+    Route.get('/setting/notification', 'web/language/SettingsController.notification')
+
     Route.get('/word', 'web/language/WordsController.index')
     Route.get('/word/label', 'web/language/WordsController.label')
     Route.get('/grammar', 'web/language/GrammarsController.index')

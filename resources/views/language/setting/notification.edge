@@ -1,0 +1,34 @@
+@layout('components.main')
+
+@section('title')
+<meta name="keywords" content="" />
+<meta name="description" content="" />
+<title>{{ dataset.title }}</title>
+@endsection
+
+@section('content')
+<table class="ui celled table">
+  <thead>
+    <tr class="center aligned collapsing">
+      <th class="collapsing">ID</th>
+      <th>通知时间</th>
+      <th>用户 ID</th>
+      <th>状态</th>
+      <th>订阅时间</th>
+      <th>状态变更时间</th>
+    </tr>
+  </thead>
+  <tbody>
+    @each(row in dataset.signs)
+    <tr class="center aligned collapsing">
+      <td class="collapsing">{{ row['$loki'] }}</td>
+      <td>{{ row.date }}</td>
+      <td>{{ row.openid }}</td>
+      <td>{{ row.status ? '已通知' : '未通知' }}</td>
+      <td>{{ row.meta.created }}</td>
+      <td>{{ row.meta.updated || '' }}</td>
+    </tr>
+    @endeach
+  </tbody>
+</table>
+@endsection

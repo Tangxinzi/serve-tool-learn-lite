@@ -7,80 +7,88 @@
 @endsection
 
 @section('content')
-<div class="ui segment">
-  <form class="ui form" action="{{ route('web/language/SettingsController.store') }}" method="post">
-    <div class="field">
-      <label>设置语言</label>
-      <div class="ui fluid selection dropdown">
-        <input type="hidden" name="language" value="{{ dataset.setting.language || '' }}">
-        <i class="dropdown icon"></i>
-        <div class="default text">选择</div>
-        <div class="menu">
-          <div class="item" data-value="kor"><i class="kr flag"></i>韩语</div>
-          <div class="item" data-value="jp"><i class="jp flag"></i>日语</div>
-          <div class="item" data-value="us"><i class="us flag"></i>英语</div>
+<div class="ui segments">
+  <h5 class="ui attached header">
+    <a class="flex-between" href="{{ route('web/language/SettingsController.notification') }}">
+      <span>消息通知</span>
+      <i class="angle right icon"></i>
+    </a>
+  </h5>
+  <div class="ui segment">
+    <form class="ui form" action="{{ route('web/language/SettingsController.store') }}" method="post">
+      <div class="field">
+        <label>设置语言</label>
+        <div class="ui fluid selection dropdown">
+          <input type="hidden" name="language" value="{{ dataset.setting.language || '' }}">
+          <i class="dropdown icon"></i>
+          <div class="default text">选择</div>
+          <div class="menu">
+            <div class="item" data-value="kor"><i class="kr flag"></i>韩语</div>
+            <div class="item" data-value="jp"><i class="jp flag"></i>日语</div>
+            <div class="item" data-value="us"><i class="us flag"></i>英语</div>
+          </div>
         </div>
       </div>
-    </div>
-    <div class="field">
-      <label for="articles">文章标签</label>
-      <div id="articles" class="ui fluid multiple search selection dropdown">
-        <input type="hidden" name="articles" value="{{ dataset.setting.articles || '' }}">
-        <i class="dropdown icon"></i>
-        <div class="default text">选择</div>
-        <div class="menu">
-          @each(row in dataset.labels)
-            <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
-          @endeach
+      <div class="field">
+        <label for="articles">文章标签</label>
+        <div id="articles" class="ui fluid multiple search selection dropdown">
+          <input type="hidden" name="articles" value="{{ dataset.setting.articles || '' }}">
+          <i class="dropdown icon"></i>
+          <div class="default text">选择</div>
+          <div class="menu">
+            @each(row in dataset.labels)
+              <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
+            @endeach
+          </div>
         </div>
       </div>
-    </div>
-    <div class="field">
-      <label for="grammar">语法标签</label>
-      <div id="grammar" class="ui fluid multiple search selection dropdown">
-        <input type="hidden" name="grammars" value="{{ dataset.setting.grammars || '' }}">
-        <i class="dropdown icon"></i>
-        <div class="default text">选择</div>
-        <div class="menu">
-          @each(row in dataset.labels)
-            <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
-          @endeach
+      <div class="field">
+        <label for="grammar">语法标签</label>
+        <div id="grammar" class="ui fluid multiple search selection dropdown">
+          <input type="hidden" name="grammars" value="{{ dataset.setting.grammars || '' }}">
+          <i class="dropdown icon"></i>
+          <div class="default text">选择</div>
+          <div class="menu">
+            @each(row in dataset.labels)
+              <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
+            @endeach
+          </div>
         </div>
       </div>
-    </div>
-    <div class="field">
-      <label for="speak">口语标签</label>
-      <div id="speak" class="ui fluid multiple search selection dropdown">
-        <input type="hidden" name="speaks" value="{{ dataset.setting.speaks || '' }}">
-        <i class="dropdown icon"></i>
-        <div class="default text">选择</div>
-        <div class="menu">
-          @each(row in dataset.labels)
-            <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
-          @endeach
+      <div class="field">
+        <label for="speak">口语标签</label>
+        <div id="speak" class="ui fluid multiple search selection dropdown">
+          <input type="hidden" name="speaks" value="{{ dataset.setting.speaks || '' }}">
+          <i class="dropdown icon"></i>
+          <div class="default text">选择</div>
+          <div class="menu">
+            @each(row in dataset.labels)
+              <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
+            @endeach
+          </div>
         </div>
       </div>
-    </div>
-    <div class="field">
-      <label for="word">单词标签</label>
-      <div id="word" class="ui fluid multiple search selection dropdown">
-        <input type="hidden" name="words" value="{{ dataset.setting.words || '' }}">
-        <i class="dropdown icon"></i>
-        <div class="default text">选择</div>
-        <div class="menu">
-          @each(row in dataset.labels)
-            <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
-          @endeach
+      <div class="field">
+        <label for="word">单词标签</label>
+        <div id="word" class="ui fluid multiple search selection dropdown">
+          <input type="hidden" name="words" value="{{ dataset.setting.words || '' }}">
+          <i class="dropdown icon"></i>
+          <div class="default text">选择</div>
+          <div class="menu">
+            @each(row in dataset.labels)
+              <div class="item" data-value="{{ row['$loki'] }}">{{ row.label }}</div>
+            @endeach
+          </div>
         </div>
       </div>
-    </div>
-    <div class="field">
-      <label for="word">活动通知</label>
-      <textarea name="notice" rows="8" cols="80">{{ dataset.setting.notice || '' }}</textarea>
-    </div>
-    <div class="field">
-      <button class="ui fluid button" type="submit" value="language">提交</button>
-    </div>
-  </form>
+      <div class="field">
+        <label for="word">活动通知</label>
+        <textarea name="notice" rows="8" cols="80">{{ dataset.setting.notice || '' }}</textarea>
+      </div>
+      <div class="field">
+        <button class="ui fluid button" type="submit" value="language">提交</button>
+      </div>
+    </form>
+  </div>
 </div>
 @endsection

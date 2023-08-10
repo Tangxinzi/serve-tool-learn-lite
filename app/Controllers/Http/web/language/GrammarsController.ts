@@ -98,7 +98,7 @@ export default class GrammarsController {
     collection.update(item);
     db.saveDatabase()
 
-    session.flash('message', { type: 'success', header: '更新成功', message: `${ all.title }已更新。` })
+    session.flash('message', { type: 'success', header: '更新成功', message: `已更新，<a href="/web/language/grammar/edit/0">创建</a>一条新内容。` })
     response.redirect().back()
   }
 
@@ -151,7 +151,7 @@ export default class GrammarsController {
     collection.update(item);
     db.saveDatabase()
 
-    session.flash('message', { type: 'success', header: '更新成功', message: `${ all.title }已更新。` })
+    session.flash('message', { type: 'success', header: '更新成功', message: `已更新，<a href="/web/language/grammar/edit/0">创建</a>一条新内容。` })
     response.redirect().back()
   }
 
