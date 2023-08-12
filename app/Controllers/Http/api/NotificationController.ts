@@ -73,15 +73,18 @@ export default class NotificationController {
       // 发送
       const token = await this.token();
       const send = await axios.post(`https://api.weixin.qq.com/cgi-bin/message/subscribe/send?access_token=${token.access_token}`, data);
-      if (send.errcode == '0') {
-        var sign = signs.get(element.id)
+      console.log(send.data);
+
+      if (send.data.errmsg) {
+        var sign = signs.get(element['$loki'])
         sign.status = 1
+        sign.errmsg = send.data.errmsg
         signs.update(sign);
         LokidbName.database.signs.saveDatabase()
       }
     }
 
-    return all
+    return 'ok'
   }
 
   public async signUserinfo({ request, response }: HttpContextContract) {

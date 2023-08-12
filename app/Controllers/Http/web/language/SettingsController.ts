@@ -37,6 +37,7 @@ export default class SettingsController {
 
     for (let index = 0; index < signs.data.length; index++) {
       signs.data[index].meta.created = Moment(signs.data[index].meta.created).format('YYYY-MM-DD HH:mm:ss')
+      signs.data[index].meta.updated = signs.data[index].meta.updated ? Moment(signs.data[index].meta.updated).format('YYYY-MM-DD HH:mm:ss') : ''
     }
 
     const dataset = {
@@ -58,7 +59,7 @@ export default class SettingsController {
     item.words = all.words
     item.notice = all.notice
 
-    collection.update(item);
+    collection.update(item)
     db.saveDatabase()
 
     session.flash('message', { type: 'success', header: '更新成功', message: `设置已更新。` })
